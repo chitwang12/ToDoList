@@ -40,6 +40,39 @@ app.get('/',async function(req,res){
     }
         });
 
+//Creating Tasks
+     app.post('/create-task',async function(req,res){
+        try{
+          let newTasks =  await Task.create({
+                description:req.body.description,
+                category : req.body.category,
+                date:req.body.date
+        })
+        return res.redirect('/');
+    }
+    catch(err)
+    {
+        console.log('Error in creating a new Task : ' , err);
+    }
+        });
+
+    // deleting tasks 
+ app.get('/delete-task', async function(req, res) {
+    try {
+        var id = req.query;
+        //checking the number of tasks to be deleted. 
+        var count = Object.keys(id).length;
+        for(let i = 0; i < count; i++) {
+            //finding and deleting tasks from the db one by one using id
+            await Task.findByIdAndDelete(Object.keys(id)[i]);
+        }
+        return res.redirect('/');
+    } catch(err) {
+        console.log('Error in deleting tasks: ', err);
+    }
+});
+
+
 //make the app to listen on assigned port number
 app.listen(port,function(err){
     if(err)
@@ -49,3 +82,4 @@ app.listen(port,function(err){
 
     console.log(`Server is running successfully on : ${port}`);
 });
+
