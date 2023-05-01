@@ -1,3 +1,4 @@
+require('dotenv').config();
 // require the express for setting up the server
 const express = require('express');
 //require the path module 
